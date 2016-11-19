@@ -1,0 +1,215 @@
+Created by PLY version 3.9 (http://www.dabeaz.com/ply)
+
+Grammar
+
+Rule 0     S' -> pred
+Rule 1     pred -> LPAREN NOT pred RPAREN
+Rule 2     pred -> LPAREN pred AND pred RPAREN
+Rule 3     pred -> LPAREN pred OR pred RPAREN
+Rule 4     pred -> LPAREN pred IMPLIES pred RPAREN
+Rule 5     pred -> PREDICATE
+
+Terminals, with rules where they appear
+
+AND                  : 2
+IMPLIES              : 4
+LPAREN               : 1 2 3 4
+NOT                  : 1
+OR                   : 3
+PREDICATE            : 5
+RPAREN               : 1 2 3 4
+error                : 
+
+Nonterminals, with rules where they appear
+
+pred                 : 1 2 2 3 3 4 4 0
+
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . pred
+    (1) pred -> . LPAREN NOT pred RPAREN
+    (2) pred -> . LPAREN pred AND pred RPAREN
+    (3) pred -> . LPAREN pred OR pred RPAREN
+    (4) pred -> . LPAREN pred IMPLIES pred RPAREN
+    (5) pred -> . PREDICATE
+
+    LPAREN          shift and go to state 2
+    PREDICATE       shift and go to state 1
+
+    pred                           shift and go to state 3
+
+state 1
+
+    (5) pred -> PREDICATE .
+
+    RPAREN          reduce using rule 5 (pred -> PREDICATE .)
+    AND             reduce using rule 5 (pred -> PREDICATE .)
+    OR              reduce using rule 5 (pred -> PREDICATE .)
+    IMPLIES         reduce using rule 5 (pred -> PREDICATE .)
+    $end            reduce using rule 5 (pred -> PREDICATE .)
+
+
+state 2
+
+    (1) pred -> LPAREN . NOT pred RPAREN
+    (2) pred -> LPAREN . pred AND pred RPAREN
+    (3) pred -> LPAREN . pred OR pred RPAREN
+    (4) pred -> LPAREN . pred IMPLIES pred RPAREN
+    (1) pred -> . LPAREN NOT pred RPAREN
+    (2) pred -> . LPAREN pred AND pred RPAREN
+    (3) pred -> . LPAREN pred OR pred RPAREN
+    (4) pred -> . LPAREN pred IMPLIES pred RPAREN
+    (5) pred -> . PREDICATE
+
+    NOT             shift and go to state 4
+    LPAREN          shift and go to state 2
+    PREDICATE       shift and go to state 1
+
+    pred                           shift and go to state 5
+
+state 3
+
+    (0) S' -> pred .
+
+
+
+state 4
+
+    (1) pred -> LPAREN NOT . pred RPAREN
+    (1) pred -> . LPAREN NOT pred RPAREN
+    (2) pred -> . LPAREN pred AND pred RPAREN
+    (3) pred -> . LPAREN pred OR pred RPAREN
+    (4) pred -> . LPAREN pred IMPLIES pred RPAREN
+    (5) pred -> . PREDICATE
+
+    LPAREN          shift and go to state 2
+    PREDICATE       shift and go to state 1
+
+    pred                           shift and go to state 6
+
+state 5
+
+    (2) pred -> LPAREN pred . AND pred RPAREN
+    (3) pred -> LPAREN pred . OR pred RPAREN
+    (4) pred -> LPAREN pred . IMPLIES pred RPAREN
+
+    AND             shift and go to state 9
+    OR              shift and go to state 7
+    IMPLIES         shift and go to state 8
+
+
+state 6
+
+    (1) pred -> LPAREN NOT pred . RPAREN
+
+    RPAREN          shift and go to state 10
+
+
+state 7
+
+    (3) pred -> LPAREN pred OR . pred RPAREN
+    (1) pred -> . LPAREN NOT pred RPAREN
+    (2) pred -> . LPAREN pred AND pred RPAREN
+    (3) pred -> . LPAREN pred OR pred RPAREN
+    (4) pred -> . LPAREN pred IMPLIES pred RPAREN
+    (5) pred -> . PREDICATE
+
+    LPAREN          shift and go to state 2
+    PREDICATE       shift and go to state 1
+
+    pred                           shift and go to state 11
+
+state 8
+
+    (4) pred -> LPAREN pred IMPLIES . pred RPAREN
+    (1) pred -> . LPAREN NOT pred RPAREN
+    (2) pred -> . LPAREN pred AND pred RPAREN
+    (3) pred -> . LPAREN pred OR pred RPAREN
+    (4) pred -> . LPAREN pred IMPLIES pred RPAREN
+    (5) pred -> . PREDICATE
+
+    LPAREN          shift and go to state 2
+    PREDICATE       shift and go to state 1
+
+    pred                           shift and go to state 12
+
+state 9
+
+    (2) pred -> LPAREN pred AND . pred RPAREN
+    (1) pred -> . LPAREN NOT pred RPAREN
+    (2) pred -> . LPAREN pred AND pred RPAREN
+    (3) pred -> . LPAREN pred OR pred RPAREN
+    (4) pred -> . LPAREN pred IMPLIES pred RPAREN
+    (5) pred -> . PREDICATE
+
+    LPAREN          shift and go to state 2
+    PREDICATE       shift and go to state 1
+
+    pred                           shift and go to state 13
+
+state 10
+
+    (1) pred -> LPAREN NOT pred RPAREN .
+
+    RPAREN          reduce using rule 1 (pred -> LPAREN NOT pred RPAREN .)
+    AND             reduce using rule 1 (pred -> LPAREN NOT pred RPAREN .)
+    OR              reduce using rule 1 (pred -> LPAREN NOT pred RPAREN .)
+    IMPLIES         reduce using rule 1 (pred -> LPAREN NOT pred RPAREN .)
+    $end            reduce using rule 1 (pred -> LPAREN NOT pred RPAREN .)
+
+
+state 11
+
+    (3) pred -> LPAREN pred OR pred . RPAREN
+
+    RPAREN          shift and go to state 14
+
+
+state 12
+
+    (4) pred -> LPAREN pred IMPLIES pred . RPAREN
+
+    RPAREN          shift and go to state 15
+
+
+state 13
+
+    (2) pred -> LPAREN pred AND pred . RPAREN
+
+    RPAREN          shift and go to state 16
+
+
+state 14
+
+    (3) pred -> LPAREN pred OR pred RPAREN .
+
+    RPAREN          reduce using rule 3 (pred -> LPAREN pred OR pred RPAREN .)
+    AND             reduce using rule 3 (pred -> LPAREN pred OR pred RPAREN .)
+    OR              reduce using rule 3 (pred -> LPAREN pred OR pred RPAREN .)
+    IMPLIES         reduce using rule 3 (pred -> LPAREN pred OR pred RPAREN .)
+    $end            reduce using rule 3 (pred -> LPAREN pred OR pred RPAREN .)
+
+
+state 15
+
+    (4) pred -> LPAREN pred IMPLIES pred RPAREN .
+
+    RPAREN          reduce using rule 4 (pred -> LPAREN pred IMPLIES pred RPAREN .)
+    AND             reduce using rule 4 (pred -> LPAREN pred IMPLIES pred RPAREN .)
+    OR              reduce using rule 4 (pred -> LPAREN pred IMPLIES pred RPAREN .)
+    IMPLIES         reduce using rule 4 (pred -> LPAREN pred IMPLIES pred RPAREN .)
+    $end            reduce using rule 4 (pred -> LPAREN pred IMPLIES pred RPAREN .)
+
+
+state 16
+
+    (2) pred -> LPAREN pred AND pred RPAREN .
+
+    RPAREN          reduce using rule 2 (pred -> LPAREN pred AND pred RPAREN .)
+    AND             reduce using rule 2 (pred -> LPAREN pred AND pred RPAREN .)
+    OR              reduce using rule 2 (pred -> LPAREN pred AND pred RPAREN .)
+    IMPLIES         reduce using rule 2 (pred -> LPAREN pred AND pred RPAREN .)
+    $end            reduce using rule 2 (pred -> LPAREN pred AND pred RPAREN .)
+

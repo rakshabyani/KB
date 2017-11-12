@@ -10,7 +10,6 @@ def main():
     for i in range(int(no_of_queries)):
         temp = re.sub('\s+','',file.readline()).strip('\n').strip()
         queries_list.append(temp)
-    # print(queries_list)
 
     no_of_sentences_KB = file.readline().strip()
     KB = []
@@ -21,7 +20,6 @@ def main():
         # temp = file.readline().replace("\s+", "").strip('\n')
         KB.append(lex.parser.parse(temp))
 
-    # print(KB)
     #Convert to CNF
     for i in range(len(KB)):
         temp = KB[i]
@@ -142,8 +140,6 @@ def main():
         try:
             is_resolved = resolve(list_of_query_ele, KB_string, dict, dict_predicates, predicates)
         except RuntimeError as res:
-            # if res.args[0] != 'maximum recursion depth exceeded':
-            #     raise
             is_resolved = "False"
 
         if is_resolved == "Resolved":
@@ -151,12 +147,8 @@ def main():
         else:
             output.write("FALSE")
         output.write("\n")
-
-    #output.write("TRUE\nTRUE\nTRUE\nFALSE\nFALSE\nTRUE")
     output.close()
 
-    # print(KB)
-    # print(KB_string)
 
 
 #STEP 1 : method to remove implication
@@ -185,25 +177,11 @@ def removeimplication(clause):
         clause[implypos - 1] = temp
 
     return clause
-    # if isinstance(clause_to_negate,list):
-    #     if '=>' in clause:
-    #         clause[implypos - 1] = removeimplication(clause_to_negate)
-    # temp.append('~')
-    # temp.append(clause_to_negate)
-    # clause[implypos - 1] = temp
-    # return clause
+
 
 #STEP 2 : method to move negation inside
 def negateloop(clause):
-    # for sublist in clause:
-    #     if isinstance(sublist, list):
-    #         sublist = negateloop(sublist)
-    # if '~' in clause:
-    #     if isinstance(clause[1],list):
-    #         clause[1] = negationMethod(clause[1])
-    #         clause.pop(0)
-    #     # else:
-    #     #     clause = negationMethod(clause)
+
 
     for index in range((len(clause))):
         sublist = clause[index]
@@ -226,8 +204,6 @@ def negateloop(clause):
 
 def negationMethod(clause_to_negate):
     temp = []
-    #if clause_to_negate[0] == '~':
-     #   clause_to_negate = clause_to_negate[1]
     if '&' in clause_to_negate:
         #indices = [i for i, x in enumerate(temp) if x == "&"]
         pos_of_and = clause_to_negate.index('&')
@@ -240,16 +216,6 @@ def negationMethod(clause_to_negate):
             clause_to_negate[pos_of_and + 1 ] = negationMethod(clause_to_negate[pos_of_and + 1])
         else:
             clause_to_negate[pos_of_and + 1] = NOT(clause_to_negate[pos_of_and + 1 ])
-        # for i in range(len(clause_to_negate)):
-        #     if i != pos_of_and:
-        #         if isinstance(clause_to_negate[i],list):
-        #             #copy_of_clause = deepcopy(clause_to_negate[i])
-        #             clause_to_negate[i] = negationMethod(clause_to_negate[i])
-        #         else:
-        #             temp = []
-        #             temp.append('~')
-        #             temp.append(clause_to_negate[i])
-        #             clause_to_negate[i] = temp
 
     elif '|' in clause_to_negate:
         pos_of_or = clause_to_negate.index('|')
@@ -262,14 +228,7 @@ def negationMethod(clause_to_negate):
             clause_to_negate[pos_of_or + 1] = negationMethod(clause_to_negate[pos_of_or + 1])
         else:
             clause_to_negate[pos_of_or + 1] = NOT(clause_to_negate[pos_of_or + 1])
-        # for i in range(len(clause_to_negate)):
-        #     if i != pos_of_or:
-        #         if isinstance(clause_to_negate[i],list):
-        #             clause_to_negate[i] = negationMethod(clause_to_negate[i])
-        #         temp = []
-        #         temp.append('~')
-        #         temp.append(clause_to_negate[i])
-        #         clause_to_negate[i] = temp
+
     elif '~' in clause_to_negate:
         clause_to_negate.pop(0)
     return clause_to_negate
@@ -283,8 +242,6 @@ def convert_to_conjunction_of_clauses(clause):
         if isinstance(subclause,list):
             subclause = convert_to_conjunction_of_clauses(subclause)
             clause[index] = subclause
-        # else:
-        #     clause[index] = subclause
 
 
     if '|' in clause:
@@ -356,44 +313,6 @@ def convert_to_conjunction_of_clauses(clause):
         simplified_clause = clause
     return simplified_clause
 
-
-
-# def convert_to_conjunction_of_clauses(clause_before, clause_after):
-#     #indices = [i for i, x in enumerate(clause) if x == "|"]
-#     #for index in indices:
-#     cnf_clause = []
-#     constructed_clause = []
-#     if isinstance(clause_before, list):
-#         temp = clause_before
-#         if '|' in temp:
-#             pos = temp.index('|')
-#             temp = convert_to_conjunction_of_clauses(temp[pos-1], temp[pos+1])
-#         if '&' in temp:
-#             pos_of_and = temp.index('&')
-#             constructed_clause.append(temp[pos_of_and-1])
-#             constructed_clause.append('|')
-#             constructed_clause.append(clause_after)
-#             cnf_clause.append(constructed_clause)
-#             constructed_clause = []
-#             constructed_clause.append(temp[pos_of_and+1])
-#             constructed_clause.append('|')
-#             constructed_clause.append(clause_after)
-#             cnf_clause.append('&')
-#             cnf_clause.append(constructed_clause)
-#     if isinstance(clause_after, list):
-#         temp = clause_after
-#         if '|' in temp:
-#             pos = temp.index('|')
-#             temp = convert_to_conjunction_of_clauses(temp[pos - 1], temp[pos + 1])
-#         if '&' in temp:
-#             temp = seperate_and_clauses(temp)
-#
-#     if len(cnf_clause) == 0:
-#         cnf_clause.append(clause_before)
-#         cnf_clause.append('|')
-#         cnf_clause.append(clause_after)
-#     return cnf_clause
-
 #STEP 4 : Remove the parantheses and make it a list of clauses
 def seperate_and_clauses(clause):
     KB_and_clauses = []
@@ -412,26 +331,6 @@ def seperate_and_clauses(clause):
         KB_and_clauses = convert_to_string(clause)
 
     return KB_and_clauses
-
-    # if isinstance(clause_before,list):
-    #     clause_before = seperate_and_clauses(clause_before)
-    # if isinstance(clause_after,list):
-    #     clause_after = seperate_and_clauses(clause_after)
-    # if '&' in clause:
-    #     # pos_of_and = clause.index('&')
-    #     # clause_before = clause[pos_of_and - 1]
-    #     # clause_after = clause[pos_of_and + 1]
-    #     # and_before = [element for element in clause_before if '&' in element]
-    #     # and_after = [element for element in clause_after if '&' in element]
-    #     # if len(and_before) > 0 :
-    #     KB_and_clauses.append(convert_to_string(clause_before))
-    #     # if len(and_after) > 0 :
-    #     if isinstance(clause_after,list):
-    #         KB_and_clauses.extend(clause_after)
-    #     else:
-    #         KB_and_clauses.append(convert_to_string(clause_after))
-    # else:
-    #     KB_and_clauses.append(clause)
 
 
 def convert_to_string(clause):
@@ -464,8 +363,6 @@ def resolve(list_of_query_ele, KB_string, dict,dict_predicates, predicates):
                     ele = ele[:-1]
                     indices.append(ele)
 
-        # list_of_query = deepcopy(list_of_query_ele)
-        # matching_clauses = check_in_KB(query, KB_string, dict_predicates, dict)
         for index_clause in indices:
             dict_copy = {}
             # dict_predicates_copy = deepcopy(dict_predicates)
@@ -484,17 +381,9 @@ def resolve(list_of_query_ele, KB_string, dict,dict_predicates, predicates):
             if is_resolved == "Resolved":
                 return "Resolved"
 
-    # if list_of_query_ele == list_of_query:
-    #     return "False"
-    # if is_resolved == "True":
-    #     return "True"
-    # else:
     return "False"
 
 def check_in_KB(query, KB_string, dict_predicates,list_of_query_ele, dict, matching_clause):
-
-    # if dict_predicates.get(matching_clause) != 1:
-
 
     predicate_q = ''
     i = 0
@@ -552,16 +441,8 @@ def check_in_KB(query, KB_string, dict_predicates,list_of_query_ele, dict, match
 
                 pred_s = pred_s[:-1]
                 pred_s += ')'
-                # for key in dict.keys():
-                #     result = [i for i in range(len(temp)) if temp[i]==key]
-                #     for index in result:
-                #         temp[index] = dict.get(key)
-                #         # temp = temp.replace(key,dict.get(key))
-                #     # infinity_check = infinity_check.replace(key,dict.get(key))
-                #     if isVar(dict.get(key)):
-                #         temp = temp.replace(key,key+'1')
+
                 temp_list.append(NOT(pred_s))
-                # infinity_check_list.append(NOT(infinity_check))
             list_of_query_ele.remove(query)
 
             for pos in range(len(list_of_query_ele)):
@@ -584,9 +465,6 @@ def check_in_KB(query, KB_string, dict_predicates,list_of_query_ele, dict, match
                 pred_s = pred_s[:-1]
                 pred_s += ')'
                 list_of_query_ele[pos] = pred_s
-                # temporary = ''.join(dict[s] if s in dict.keys() else s for s in temp)
-                # temp = ''.join(dict[s] if s in dict.keys() else s for s in temp)
-                # temp_list.append(temporary)
 
             list_of_query_ele.extend(temp_list)
             if matching_clause in dict_predicates.keys():

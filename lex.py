@@ -2,6 +2,7 @@
 
 import ply.lex as lex
 import ply.yacc as yacc
+import re
 
 tokens = ('LPAREN', 'RPAREN', 'AND', 'NOT', 'OR', 'IMPLIES', 'PREDICATE')
 
@@ -13,7 +14,7 @@ t_NOT = r'~'
 # t_ID = r'[A-ZA-Za-z_][a-zA-Z0-9_]*'
 t_LPAREN = r'\('
 t_RPAREN = r'\)'
-t_PREDICATE = r"[A-Z][A-Za-z]* [(] ( [A-Za-z]*) ([,] [A-Za-z]*)*[)]"
+t_PREDICATE = r"[A-Z][A-Za-z]* [(]([A-Za-z]*)([,] [A-Za-z]*)*[)]"
 
 def p_NOT(p):
     """
@@ -48,6 +49,7 @@ def p_error(p):
 
 lexer = lex.lex()
 parser = yacc.yacc()
-print(parser.parse("F(Bob)".replace("\s+","")),lexer)
+# print(re.sub('\s+', '', "(Kills(Jack, Tuna) | Kills(Curiosity, Tuna))").strip())
+# print(parser.parse(re.sub('\s+', '', "(Kills(Jack, Tuna) | Kills(Curiosity, Tuna))").strip()),lexer)
 
 #read each line from file , replace trailing spaces with single/no space, then pass it through parser
